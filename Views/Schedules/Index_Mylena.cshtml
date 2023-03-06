@@ -1,0 +1,220 @@
+﻿@model MvcSistemaSalao.Models.ScheduleViewModel
+
+@{
+    ViewData["Title"] = "Agenda Mylena";
+    string horario = "";
+    int x = 0;
+    int y = 0;
+    int z = -1;
+    Schedule s = null;
+    string[] horas = { "8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30",
+     "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30"};
+}
+
+
+<!-- Modal -->
+<div id="modal" class="modal fade" role="dialog" aria-bs-hidden="true"></div>
+
+
+<h2 class="fw-bold">Agenda Mylena</h2>
+
+
+<div class="row mt-3 fw-bold">
+
+    <div class="col-md-4">
+         <div class="form-group">
+            
+            <label asp-for="AppointmentDate" class="control-label">Data</label>
+            <input type="date" asp-for="AppointmentDate" class="form-control" id="date-picker" />
+
+        </div>
+        <br/>
+    </div>
+
+    @if (Html.Value("AppointmentDate") != ""){
+        <h4 class="fw-bold">@getDay(DateTime.Parse(Html.Value("AppointmentDate")).DayOfWeek.ToString())--->@DateTime.Parse(Html.Value("AppointmentDate")).ToShortDateString()</h4>
+    }
+
+    <div>
+        <table class="table text-dark">
+            <thead>
+                <tr class="text-center" style="border: 2px solid grey; background-color: #323238; color: #fff; font-size: 20px">
+                    <th>Horários</th>
+                    <th>Cliente</th>
+                    <th>Serviço</th>
+                    <th>Ação</th>
+
+                </tr>
+            </thead>
+
+            <tbody class="border-light">
+                    @if (Html.Value("AppointmentDate") != "")
+                    @for (int i = 0; i < horas.Length; i++)
+                    {
+                        horario = horas[i];
+
+
+                        <tr class="text-center table-dark" style="border: 2px solid grey">
+                            <td>@horario</td>
+                                @foreach (var item in Model.Schedules)
+                                {
+                                    if (horario == item.StartTime)
+                                    {
+                                        s = item;
+                                        <td>@item.Name</td>
+                                        <td>@item.Service</td>
+                                        <td>
+                                            <a class="btn btn-primary border-warning edit" 
+                                             data-toggle="modal" data-target="#modal" 
+                                             appointmentDate="@Html.Value("AppointmentDate")" 
+                                             id="@item.Id">Editar</a>
+
+                                            <a class="btn btn-danger border-warning delete" 
+                                            data-toggle="modal" data-target="#modal" 
+                                            appointmentDate="@Html.Value("AppointmentDate")" 
+                                            id="@item.Id">Excluir</a>
+                                        </td>
+                                        x = i;
+                                        z = x;
+
+                                        for (int j = 0; j < horas.Length; j++)
+                                        {
+                                            if (horas[j] == item.EndTime)
+                                            {
+                                                if (j >= z)
+                                                {
+                                                    y = j;
+                                                    break;
+                                                }
+
+
+                                            }
+                                        }
+
+                                        break;
+                                    }
+                                    else if (z < y && z != -1)
+                                    {
+                                        <td><div class="btn btn-primary w-100"></div></td>
+                                        <td><div class="btn btn-primary w-100"></div></td>
+                                        <td>Horário Reservado</td>
+
+                                        z++;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        s = null;
+                                    }
+                                }
+
+                            @if (s == null)
+                            {
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <a class="btn btn-success border-warning create"
+                                        startTime="@horario"
+                                        endTime="@horario"
+                                        data-toggle="modal" 
+                                        data-target="#modal"
+                                        appointmentDate="@Html.Value("AppointmentDate")">
+                                        Adicionar Horário
+                                    </a>
+                                </td>
+                            }
+                        </tr>
+
+                    }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+      
+
+
+@{
+    string getDay(string day)
+    {
+        switch (day)
+        {
+            case "Monday":
+                day = "Segunda-feira";
+                break;
+            case "Tuesday":
+                day = "Terça-feira";
+                break;
+            case "Wednesday":
+                day = "Quarta-feira";
+                break;
+            case "Thursday":
+                day = "Quinta-feira";
+                break;
+            case "Friday":
+                day = "Sexta-feira";
+                break;
+            case "Saturday":
+                day = "Sábado";
+                break;
+            default:
+                day = "Domingo";
+                break;
+
+        }
+        return day;
+    }
+}
+
+@section scripts{
+    <script>
+        function SetDate(value) {
+            //carrega um endereço
+            window.location.href = "Index_Mylena?AppointmentDate=" + value;
+        }
+
+        $("#date-picker").change(function () {
+            //carrega um endereço
+            window.location.href = "Index_Mylena?AppointmentDate=" + $("#date-picker").val();
+        });
+
+
+        //Modais
+        $(".edit").click(function () {
+            var date = $(this).attr("appointmentDate")
+            var id = $(this).attr("id")
+
+            $('#modal').load('Edit_Mylena/' + id + '?appointmentDate=' + date, function () {
+                $('#modal').modal('show');
+            });
+
+        });
+
+        $(".delete").click(function () {
+            var date = $(this).attr("appointmentDate")
+            var id = $(this).attr("id")
+
+            $('#modal').load('Delete_Mylena/' + id + '?appointmentDate=' + date, function () {
+                $('#modal').modal('show');
+            });
+
+        });
+
+        $(".create").click(function () {
+            var date = $(this).attr("appointmentDate")
+            var startTime = $(this).attr("startTime")
+            var endTime = $(this).attr("endTime")
+
+            $('#modal').load('Create_Mylena?startTime=' + startTime + '&endTime=' + endTime + '&appointmentDate=' + date, function () {
+                $('#modal').modal('show');
+            });
+
+        });
+
+    </script>
+}
+
+    
+
+
+

@@ -1,0 +1,72 @@
+﻿@model MvcSistemaSalao.Models.Schedule
+
+@{
+    ViewData["Title"] = "Editar Horário";
+    string[] horas = { "8:00", "8:30", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30",
+     "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30"};
+}
+
+<div class="modal-dialog fw-bold" style="margin-top: 100px">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title fw-bold" id="modalLabel">Editar Horário</h4>
+            <button type="button" class="border-0 bg-transparent btn-close" data-bs-dismiss="modal" aria-label="Close">
+            </button>
+        </div>
+        <div class="modal-body">
+            <form asp-action="Edit_Jhonny" asp-route-appointmentDate="@Html.Value("AppointmentDate")">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                
+                    <input type="hidden" asp-for="Professional" value="Jhonny" />
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="Service" class="control-label"></label>
+                    <input asp-for="Service" class="form-control" />
+                    <span asp-validation-for="Service" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                
+                    <input type="hidden" asp-for="AppointmentDate" class="form-control" /> 
+
+                </div>
+                <div class="form-group">
+                    
+                    <input type="hidden" asp-for="StartTime" class="form-control" />
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="EndTime" class="control-label"></label>
+                    <select asp-for="EndTime" class="form-control">
+                        @for (int i = 0; i < horas.Length; i++)
+                        {
+                            <option value="@horas[i]">@horas[i]</option>
+                        }
+                    </select>
+                    <span asp-validation-for="EndTime" class="text-danger"></span>
+                </div>
+                <hr class="mt-4" style="margin-left: -14px; width: 106%" />
+                <div class="form-group">
+                    <input type="submit" value="Salvar" class="btn btn-primary" />
+                    <a class="btn btn-success border-warning" asp-action="Index_Jhonny" asp-route-appointmentDate="@Html.Value("AppointmentDate")">Voltar para a Agenda</a>
+                </div>
+            </form>
+        </div>
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <p style="color: red; font-size: 20px; font-weight:bold; text-align: center;">@ViewBag.ErrorMessage</p>
+        }
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

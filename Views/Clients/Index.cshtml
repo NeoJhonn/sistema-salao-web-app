@@ -1,0 +1,119 @@
+﻿@model MvcSistemaSalao.Models.ClientViewModel
+
+@{
+    ViewData["Title"] = "Cadastro de CLientes";
+}
+
+<!-- Modal -->
+<div id="modal" class="modal fade" role="dialog" aria-bs-hidden="true"></div>
+
+<h2 class="fw-bold">Cadastro de Clientes</h2>
+
+<div class="mt-3 fw-bold">
+
+    <div class="col-md-4">
+        <div class="form-group">
+                <select asp-for="Professional" class="form-control" onchange="SetProfessional(this.value)">
+                    <option value="Selecione um profissional">Selecione um profissional</option>
+                    <option value="Jhonny">Jhonny</option>
+                    <option value="Mylena">Mylena</option>
+                </select>
+                <br />
+            <a class="btn btn-success border-warning create" 
+                data-toggle="modal" data-target="#modal"
+            >Cadastrar Novo Cliente</a>
+            <br />
+        </div>
+        <br />
+    </div>
+  
+    <div>
+        <table class="table text-dark">
+            <thead>
+                <tr class="text-center" style="border: 2px solid grey; background-color: #323238; color: #fff; font-size: 20px">
+
+                    <th>Nome</th>
+                    <th>Serviço Realizado</th>
+                    <th>Telefone</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody class="border-light">
+                @if(Model.Clients != null)
+                @foreach (var item in Model.Clients) {
+                    <tr class="text-center table-dark" style="border: 2px solid grey">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PhoneNumber)
+                        </td>
+                        <td>
+                            <a class="btn btn-primary border-warning edit"
+                                data-toggle="modal" data-target="#modal" 
+                                id="@item.Id"
+                            >Editar</a> 
+
+                            <a class="btn btn-success border-warning details"
+                                data-toggle="modal" data-target="#modal" 
+                                id="@item.Id"
+                            >Detalhes</a> 
+
+                            <a class="btn btn-danger border-warning delete"
+                                data-toggle="modal" data-target="#modal" 
+                                id="@item.Id"
+                            >Excluir</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+                   
+
+@section scripts{
+    <script>
+        function SetProfessional(value) {
+            window.location.href = 'Clients?Professional=' + value;
+        }
+
+        //Modais
+        $(".create").click(function () {
+            $('#modal').load('Clients/Create', function () {
+                $('#modal').modal('show');
+            });
+
+        });
+
+        $(".edit").click(function () {
+            var id = $(this).attr("id")
+
+            $('#modal').load('Clients/Edit/' + id, function () {
+                $('#modal').modal('show');
+            });
+
+        });
+
+        $(".details").click(function () {
+            var id = $(this).attr("id")
+
+            $('#modal').load('Clients/Details/' + id, function () {
+                $('#modal').modal('show');
+            });
+
+        });
+
+        $(".delete").click(function () {
+            var id = $(this).attr("id")
+
+            $('#modal').load('Clients/Delete/' + id, function () {
+                $('#modal').modal('show');
+            });
+
+        });
+    </script>
+}

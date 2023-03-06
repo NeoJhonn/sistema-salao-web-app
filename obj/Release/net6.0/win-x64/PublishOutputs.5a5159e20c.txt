@@ -1,0 +1,6 @@
+D:\Projetos\Projetos.Net\MvcSistemaSalao\obj\Release\net6.0\win-x64\PubTmp\Out\appsettings.Development.json
+D:\Projetos\Projetos.Net\MvcSistemaSalao\obj\Release\net6.0\win-x64\PubTmp\Out\appsettings.json
+D:\Projetos\Projetos.Net\MvcSistemaSalao\obj\Release\net6.0\win-x64\PubTmp\Out\MvcSistemaSalao.pdb
+D:\Projetos\Projetos.Net\MvcSistemaSalao\obj\Release\net6.0\win-x64\PubTmp\Out\aspnetcorev2_inprocess.dll
+D:\Projetos\Projetos.Net\MvcSistemaSalao\obj\Release\net6.0\win-x64\PubTmp\Out\Microsoft.Data.SqlClient.SNI.dll
+D:\Projetos\Projetos.Net\MvcSistemaSalao\obj\Release\net6.0\win-x64\PubTmp\Out\MvcSistemaSalao.exe

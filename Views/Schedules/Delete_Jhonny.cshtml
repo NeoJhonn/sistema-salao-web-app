@@ -1,0 +1,81 @@
+﻿@model MvcSistemaSalao.Models.Schedule
+
+@{
+    ViewData["Title"] = "Excluir Horário";
+}
+
+<style>
+    .modal-body dl {
+        margin-bottom: -5px;
+    }
+
+        .modal-body dl dt {
+        }
+
+        .modal-body dl dd {
+            position: relative;
+            left: 36%;
+            margin-top: -1.43rem;
+        }
+
+</style>
+
+<div class="modal-dialog" style="margin-top: 100px">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title fw-bold" id="modalLabel">Excluir este Horário?</h4>
+            <button type="button" class="border-0 bg-transparent btn-close" data-bs-dismiss="modal" aria-label="Close">
+            </button>
+        </div>
+        <div class="modal-body">
+            <dl class="row">
+                <dt class="col-sm-2 col-md-12 fw-bold">
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+                <dt class="col-sm-2 col-md-12 fw-bold">
+                    @Html.DisplayNameFor(model => model.Professional)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Professional)
+                </dd>
+                <dt class="col-sm-2 col-md-12 fw-bold">
+                    @Html.DisplayNameFor(model => model.Service)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Service)
+                </dd>
+                <dt class="col-sm-2 col-md-12 fw-bold">
+                    @Html.DisplayNameFor(model => model.AppointmentDate)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.AppointmentDate)
+                </dd>
+                <dt class="col-sm-2 col-md-12 fw-bold">
+                    @Html.DisplayNameFor(model => model.StartTime)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.StartTime)
+                </dd>
+                <dt class="col-sm-2 col-md-12 fw-bold">
+                    @Html.DisplayNameFor(model => model.EndTime)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.EndTime)
+                </dd>
+            </dl>
+        </div>
+        <div class="modal-footer">
+            <div class="form-control border-0">
+                <form asp-action="Delete_Jhonny" asp-route-appointmentDate="@Html.Value("AppointmentDate")">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="submit" value="Excluir" class="btn btn-danger" />
+                    <a class="btn btn-success border-warning" asp-action="Index_Jhonny" asp-route-appointmentDate="@Html.Value("AppointmentDate")">Voltar para Agenda</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

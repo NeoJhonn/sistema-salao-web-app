@@ -1,0 +1,67 @@
+﻿@model MvcSistemaSalao.Models.Login
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+
+
+<div class="container">
+
+    <div class="d-flex justify-content-center" style="margin-top: 10%">
+
+        <div class="card h-100 w-25">
+
+            <div class="card-header">
+
+                <h3>Login</h3>
+
+            </div>
+
+            <div class="card-body">
+
+                @using (Html.BeginForm("Index", "Login", FormMethod.Post))
+                {
+                    if (ViewBag.LoginStatus != null)
+                    {
+                        if (ViewBag.LoginStatus == 1)
+                        {
+                            <div class="alert alert-danger">Login inválido!</div>
+                        }
+                    }
+
+                    <div class="input-group form-grou mb-2">
+                        @Html.TextBoxFor(m => m.LoginID, new { @class = "form-control", @placeholder = "usuário", @required = true })
+                    </div>
+
+                    <div class="input-group form-group">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "senha", @required = true })
+                    </div>
+
+                    <div class="row align-items-center remember">
+
+                        <p class="mt-2">Lembrar login <input type="checkbox"></p>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <input type="submit" value="Login" class="btn btn-primary" >
+
+                    </div>
+                }
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+@*@section script {
+    <script>
+        document.getElementsByTagName("footer").setAttribute("style","display: none")
+    </script>
+}*@
