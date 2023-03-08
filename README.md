@@ -7,8 +7,7 @@ Sistema de agendamentos e cadastro de clientes desenvolvido em Asp.Net Mvc.
 <p align="center">
   <a href="#-tecnologias">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#-projeto">Projeto</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#-layout">Layout</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#memo-licença">Licença</a>
+  <a href="#licença">Licença</a>
 </p>
 
 <p align="center">
@@ -18,11 +17,11 @@ Sistema de agendamentos e cadastro de clientes desenvolvido em Asp.Net Mvc.
 <br>
 
 <p align="center">
-   <img alt="nlw-setup" src=".github/pic_1.png" 
+   <img alt="sistema-salao" src=".github/pic_1.png" 
   width="80%">
   <br>
   <br>
-  <img alt="nlw-setup" src=".github/pic_2.png" 
+  <img alt="sistema-salao" src=".github/pic_2.png" 
   width="80%">
 </p>
 
