@@ -99,7 +99,9 @@ namespace MvcSistemaSalao.Controllers
             int y = 0;
             int z = -1;
             bool hasStartHour = false;
-            bool hasEndHour = false;
+
+            var sched = from m in _context.Schedule
+                        select m;
             var schedulesV = from m in _context.Schedule
                              select m;
 
@@ -149,21 +151,17 @@ namespace MvcSistemaSalao.Controllers
                         for (int k = z; k <= y; k++)
                         {
 
-                            foreach (var item in _context.Schedule)
-                            {
-                                if (horas[k] == item.StartTime && item.AppointmentDate == schedule.AppointmentDate && item.Professional == schedule.Professional)
-                                {
-                                    hasStartHour = true;
+                            sched = sched.Where(i => i.StartTime == horas[k] && i.AppointmentDate == schedule.AppointmentDate &&
+                                            i.Professional == schedule.Professional).AsNoTracking();
 
-                                }
-                                else if (horas[k] == item.EndTime && item.AppointmentDate == schedule.AppointmentDate && item.Professional == schedule.Professional)
-                                {
-                                    hasEndHour = true;
-                                }
+
+                            if (!sched.IsNullOrEmpty())
+                            {
+                                hasStartHour = true;
                             }
                         }
 
-                        if (!hasStartHour && !hasEndHour)
+                        if (!hasStartHour)
                         {
                             _context.Add(schedule);
                             await _context.SaveChangesAsync();
@@ -225,7 +223,9 @@ namespace MvcSistemaSalao.Controllers
             int y = 0;
             int z = -1;
             bool hasStartHour = false;
-            bool hasEndHour = false;
+
+            var sched = from m in _context.Schedule
+                        select m;
 
             if (id != schedule.Id)
             {
@@ -266,23 +266,19 @@ namespace MvcSistemaSalao.Controllers
                 for (int k = z; k <= y; k++)
                 {
 
-                    foreach (var item in _context.Schedule.AsNoTracking())
-                    {
-                        if (horas[k] == item.StartTime && item.AppointmentDate == schedule.AppointmentDate && item.Professional == schedule.Professional && k != z)
-                        {
-                            hasStartHour = true;
+                    sched = sched.Where(i => i.StartTime == horas[k] && i.AppointmentDate == schedule.AppointmentDate &&
+                    i.Professional == schedule.Professional).AsNoTracking();
 
-                        }
-                        else if (horas[k] == item.EndTime && item.AppointmentDate == schedule.AppointmentDate && item.Professional == schedule.Professional && k != z && k == y)
-                        {
-                            hasEndHour = true;
-                        }
+                    if (!sched.IsNullOrEmpty() && k != z)
+                    {
+                        hasStartHour = true;
                     }
+
                 }
             }
             else 
             {
-                ViewBag.ErrorMessage = "Selecione um hoário de início e fim válido";
+                ViewBag.ErrorMessage = "Selecione um horário de início e fim válido";
                 return View(schedule);
 
             }
@@ -291,7 +287,7 @@ namespace MvcSistemaSalao.Controllers
             {
                 try
                 {
-                    if(!hasStartHour && !hasEndHour)
+                    if(!hasStartHour)
                     {
                         _context.Update(schedule);
                         await _context.SaveChangesAsync();
@@ -299,7 +295,7 @@ namespace MvcSistemaSalao.Controllers
                     }
                     else
                     {
-                        ViewBag.ErrorMessage = "Horário reservado ou mesmo Horário fim";
+                        ViewBag.ErrorMessage = "Já há um cliente agendado neste horário";
                     }
                 }
                 catch (DbUpdateConcurrencyException)
@@ -437,7 +433,9 @@ namespace MvcSistemaSalao.Controllers
             int y = 0;
             int z = -1;
             bool hasStartHour = false;
-            bool hasEndHour = false;
+
+            var sched = from m in _context.Schedule
+                        select m;
             var schedulesV = from m in _context.Schedule
                              select m;
 
@@ -446,8 +444,8 @@ namespace MvcSistemaSalao.Controllers
             if (ModelState.IsValid)
             {
                
-                schedulesV = schedulesV.Where(x => x.StartTime == schedule.StartTime).Where(x => x.EndTime == schedule.EndTime).
-                    Where(x => x.AppointmentDate == schedule.AppointmentDate).Where(x => x.Professional == schedule.Professional);
+                schedulesV = schedulesV.Where(x => x.StartTime == schedule.StartTime && x.EndTime == schedule.EndTime && 
+                x.AppointmentDate == schedule.AppointmentDate && x.Professional == schedule.Professional);
 
                 
 
@@ -480,28 +478,23 @@ namespace MvcSistemaSalao.Controllers
                     }
                      
                     
-                    //Validano se o horário início e fim foram selecionados corretamente
-                    if(z < y)
+                    //Validando se o horário início e fim foram selecionados corretamente
+                    if(z <= y)
                     {
                         //Para cada index do Schedule, verifique se não há hora marcada no intervalo de horas do horário a se marcado
                         for (int k = z; k <= y; k++)
                         {
 
-                            foreach (var item in _context.Schedule)
+                            sched = sched.Where(i => i.StartTime == horas[k] && i.AppointmentDate == schedule.AppointmentDate &&
+                                                i.Professional == schedule.Professional).AsNoTracking();
+
+                            if (!sched.IsNullOrEmpty())
                             {
-                                if (horas[k] == item.StartTime && item.AppointmentDate == schedule.AppointmentDate && item.Professional == schedule.Professional)
-                                { 
-                                    hasStartHour = true;
-                                        
-                                }
-                                else if (horas[k] == item.EndTime && item.AppointmentDate == schedule.AppointmentDate && item.Professional == schedule.Professional)
-                                { 
-                                    hasEndHour = true;
-                                }
+                                hasStartHour = true;
                             }
                         }
 
-                        if (!hasStartHour && !hasEndHour)
+                        if (!hasStartHour)
                         {
                             _context.Add(schedule);
                             await _context.SaveChangesAsync();
@@ -562,7 +555,9 @@ namespace MvcSistemaSalao.Controllers
             int y = 0;
             int z = -1;
             bool hasStartHour = false;
-            bool hasEndHour = false;
+
+            var sched= from m in _context.Schedule
+                             select m;
 
             if (id != schedule.Id)
             {
@@ -602,19 +597,14 @@ namespace MvcSistemaSalao.Controllers
                 //Para cada index do Schedule, verifique se não há hora marcada no intervalo de horas do horário a se marcado
                 for (int k = z; k <= y; k++)
                 {
-
-                    foreach (var item in _context.Schedule.AsNoTracking())
+                    sched = sched.Where(i => i.StartTime == horas[k] && i.AppointmentDate == schedule.AppointmentDate &&
+                    i.Professional == schedule.Professional).AsNoTracking();
+                    
+                    if (!sched.IsNullOrEmpty() && k != z)
                     {
-                        if (horas[k] == item.StartTime && item.AppointmentDate == schedule.AppointmentDate && item.Professional == schedule.Professional && k != z)
-                        {
-                            hasStartHour = true;
-
-                        }
-                        else if (horas[k] == item.EndTime && item.AppointmentDate == schedule.AppointmentDate && item.Professional == schedule.Professional && k != z && k == y)
-                        {
-                            hasEndHour = true;
-                        }
+                        hasStartHour = true;
                     }
+                    
                 }
             }
             else
@@ -628,7 +618,7 @@ namespace MvcSistemaSalao.Controllers
             {
                 try
                 {
-                    if (!hasStartHour && !hasEndHour)
+                    if (!hasStartHour)
                     {
                         _context.Update(schedule);
                         await _context.SaveChangesAsync();
@@ -636,7 +626,7 @@ namespace MvcSistemaSalao.Controllers
                     }
                     else
                     {
-                        ViewBag.ErrorMessage = "Horário reservado ou mesmo Horário fim";
+                        ViewBag.ErrorMessage = "Já há um cliente agendado neste horário";
                     }
                 }
                 catch (DbUpdateConcurrencyException)
